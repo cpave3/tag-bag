@@ -6,12 +6,24 @@ import {
     FlatList,
     View,
     Text,
-    ActivityIndicator
+    ActivityIndicator,
+    TouchableHighlight,
+    ActionSheetIOS
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as Actions from '../actions/';
+import * as ReduxActions from '../actions/';
+
+import { Actions } from 'react-native-router-flux';
+
+const BUTTONS = [
+    'Edit',
+    'Delete',
+    'Cancel'
+];
+
+const CANCEL_INDEX = 2;
 
 const styles = StyleSheet.create({
     activityIndicatorContainer: {
@@ -62,7 +74,7 @@ class Home extends Component {
                         ref='listRef'
                         data={this.props.data}
                         renderItem={this.renderItem}
-                        keyExtractor={(item, index) => toString(index)} 
+                        keyExtractor={(item, index) => {return `${index}`;}} 
                     />
                 </View>
             );
