@@ -1,35 +1,35 @@
 import { combineReducers } from 'redux';
 
-import { QUOTES_AVAILABLE, ADD_QUOTE, UPDATE_QUOTE, DELETE_QUOTE } from '../actions/';
+import { COLLECTIONS_AVAILABLE, ADD_COLLECTION, UPDATE_COLLECTION, DELETE_COLLECTION } from '../actions/';
 
 let initialState = { data: [], loading: true };
 
 const dataReducer = (state = initialState, action) => {
     let data;
     let index;
-    let quote;
+    let collection;
     switch (action.type) {
 
-        case ADD_QUOTE:
+        case ADD_COLLECTION:
             data = [...state.data];
-            data = [action.quote, ...data];
+            data = [action.collection, ...data];
             return Object.assign({}, state, { data });
 
-        case QUOTES_AVAILABLE:
+        case COLLECTIONS_AVAILABLE:
             return Object.assign({}, state, { data: action.data, loading: false });
 
-        case UPDATE_QUOTE:
-            quote = action.quote;
-            data = {...state.data};
-            index = getIndex(data, quote.id);
+        case UPDATE_COLLECTION:
+            collection = action.collection;
+            data = [...state.data];
+            index = getIndex(data, collection.id);
             if (index !== -1) {
-                data[index]['author'] = quote.author;
-                data[index]['text'] = quote.text;
+                data[index]['name'] = collection.name;
+                data[index]['tags'] = collection.tags;
             }
             return Object.assign({}, state, { data });
 
-        case DELETE_QUOTE:
-            data = {...state.data};
+        case DELETE_COLLECTION:
+            data = [...state.data];
             index = getIndex(data, id);
             if (index !== -1) {
                 data.splice(index, 1);
@@ -45,8 +45,8 @@ const rootReducer = combineReducers({
     dataReducer
 });
 
-const getIndex = (data, index) => {
-    return {...data}.findIndex((obj) => parseInt(obj.id) === parseInt(id));
+const getIndex = (data, id) => {
+    return [...data].findIndex((obj) => parseInt(obj.id) === parseInt(id));
 };
 
 export default rootReducer;

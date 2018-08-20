@@ -1,0 +1,150 @@
+import React, { Component } from 'react';
+import {
+    StyleSheet,
+    View,
+    Dimensions,
+    Text,
+    TextInput,
+    TouchableOpacity
+} from 'react-native';
+import uuid4 from 'uuid/v4';
+
+import { connect } from 'react-redux';
+import { addCollection, updateCollection } from '../actions';
+import { Actions } from 'react-native-router-flux';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+import TagInput from 'react-native-tag-input';
+
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+
+class NewCollection extends Component {
+    state = {
+        tags: (this.props.edit) ? this.props.collection.tags : [],
+        name: (this.props.edit) ? this.props.collection.name : '',
+        text: ''
+    };
+
+    generateID = () => {
+        return uuid4();
+    };
+
+    addCollection = () => {
+        if (this.props.edit) {
+            let collection = this.props.collection;
+            collection['name'] = this.state.name;
+            collection['tags'] = this.state.tags;
+            this.props.updateCollection(collection);
+        } else {
+            const id = this.generateID();
+            const collection = {
+                id,
+                name: this.state.name,
+                tags: this.state.tags
+            };
+            this.props.addCollection(collection);
+        }
+        Actions.pop();
+    };
+
+    hasData = () => {
+        return (this.state.name.length > 0 && this.state.tags.length > 0);
+    }
+
+    handleTextChange = (text) => {
+        this.setState({ text });
+
+        const lastTyped = text.charAt(text.length - 1);
+        const parseWhen = [',', ' ', ';', '\n'];
+
+        if (parseWhen.indexOf(lastTyped) > -1) {
+            this.setState({
+                tags: [...this.state.tags, this.state.text],
+                text: '',
+            });
+        }
+    }
+
+    handleTagChange = (tags) => {
+        this.setState({ tags });
+    }
+
+    render() {
+        return (
+            <View style={{flex: 1, backgroundColor: '#fff'}}>
+                <View style={{ flex: 1, paddingLeft: 10, paddingRight: 10 }}>
+                    <TextInput 
+                        onChangeText={(text) => {this.setState({ name: text })}}
+                        placeholder={'Collection Name'}
+                        autoFocus={true}
+                        style={[ styles.title ]}
+                        value={this.state.name}
+                    />
+                
+                    <View style={[styles.tags]}>
+                        <TagInput
+                            value={this.state.tags}
+                            onChange={this.handleTagChange}
+                            labelExtractor={(tag) => tag}
+                            text={this.state.text}
+                            onChangeText={this.handleTextChange}
+                            maxHeight={75}
+                            inputProps={{
+                                style: {
+                                    lineHeight: 16,
+                                    fontSize: 16,
+                                },
+                                placeholder: 'Enter tags...'
+                            }}
+                        />
+                    </View>
+                    <TouchableOpacity 
+                        style={[styles.saveBtn]}
+                        disabled={this.hasData() ? false : true}
+                        onPress={this.addCollection}
+                    >
+                        <Text style={[styles.buttonText, { color: this.hasData() ? '#FFF' : 'rgba(255,255,255,.5)' }]}>
+                            Save
+                        </Text>
+                    </TouchableOpacity>
+                    <KeyboardSpacer />
+                </View>
+            </View>
+        );
+    }
+}
+
+export default connect(null, { addCollection, updateCollection })(NewCollection);
+
+const styles = StyleSheet.create({
+    saveBtn:{
+        width: windowWidth,
+        height: 44,
+        justifyContent: "center",
+        alignItems: 'center',
+        backgroundColor:"#6B9EFA"
+    },
+
+    buttonText:{
+        fontWeight: "500",
+    },
+
+    tags: {
+        padding: 16,
+        paddingLeft:0,
+        flex:1,
+        height: 200,
+        marginBottom:50,
+        borderTopWidth: 1,
+        borderColor: "rgba(212,211,211, 0.3)",
+    },
+
+    title: {
+        fontWeight: "400",
+        lineHeight: 22,
+        fontSize: 16,
+        fontFamily: 'sans-serif',
+        height:25+32,
+        padding: 16,
+        paddingLeft:0
+    },
+})

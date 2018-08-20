@@ -527,6 +527,13 @@
     babel-runtime "^6.23.0"
     exec-async "^2.2.0"
 
+"@expo/react-native-action-sheet@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@expo/react-native-action-sheet/-/react-native-action-sheet-1.0.2.tgz#abdfb21cbefec6147c6ee8b8fb725287cbd2e696"
+  dependencies:
+    hoist-non-react-statics "^2.2.2"
+    prop-types "^15.5.10"
+
 "@expo/schemer@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@expo/schemer/-/schemer-1.1.0.tgz#74e519233f82c8871d018475895043e4caef3e7e"
@@ -3225,7 +3232,7 @@ hoek@4.x.x:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
 
-hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.2.2, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 
@@ -5706,6 +5713,13 @@ react-native-tab-view@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.0.2.tgz#66e0bc6d38a227ed2b212e3a256b7902f6ce02ed"
   dependencies:
     prop-types "^15.6.1"
+
+react-native-tag-input@^0.0.21:
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/react-native-tag-input/-/react-native-tag-input-0.0.21.tgz#07e361c58ce063b04670bd7ead6773464de98129"
+  dependencies:
+    invariant "^2.2.2"
+    prop-types "^15.5.10"
 
 react-native-vector-icons@4.5.0:
   version "4.5.0"

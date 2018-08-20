@@ -1,54 +1,54 @@
-export const QUOTES_AVAILABLE = 'DATA_AVAILABLE';
-export const ADD_QUOTE = 'ADD_QUOTE';
-export const UPDATE_QUOTE = 'UPDATE_QUOTE';
-export const DELETE_QUOTE = 'DELETE_QUOTE';
+export const COLLECTIONS_AVAILABLE = 'COLLECTIONS_AVAILABLE';
+export const ADD_COLLECTION = 'ADD_COLLECTION';
+export const UPDATE_COLLECTION = 'UPDATE_COLLECTION';
+export const DELETE_COLLECTION = 'DELETE_COLLECTION';
 
 import { AsyncStorage } from 'react-native';
 
-export function addQuote(quote) {
+export function addCollection(collection) {
     return (dispatch) => {
         AsyncStorage.getItem('data', (err, data) => {
             if (data !== null) {
                 data = JSON.parse(data);
-                data.unshift(quote);
+                data.unshift(collection);
                 AsyncStorage.setItem('data', JSON.stringify(data), () => {
-                    dispatch({ type: ADD_QUOTE, quote });
+                    dispatch({ type: ADD_COLLECTION, collection });
                 });
             }
         });
     };
 }
 
-export function getQuotes() {
+export function getCollections() {
     return (dispatch) => {
         AsyncStorage.getItem('data', (err, data) => {
             if (data !== null) {
                 data = JSON.parse(data);
-                dispatch({ type: QUOTES_AVAILABLE, data });
+                dispatch({ type: COLLECTIONS_AVAILABLE, data });
             }
         });
     };
 }
 
-export function updateQuote(quote) {
+export function updateCollection(collection) {
     return (dispatch) => {
         AsyncStorage.getItem('data', (err, data) => {
             if (data !== null) {
                 data = JSON.parse(data);
-                const index = getIndex(data, quote.id);
+                const index = getIndex(data, collection.id);
                 if (index !== -1) {
-                    data[index]['author'] = quote.author;
-                    data[index]['quote'] = quote.quote;
+                    data[index]['name'] = collection.name;
+                    data[index]['tags'] = collection.tags;
                 }
                 AsyncStorage.setItem('data', JSON.stringify(data), () => {
-                    dispatch({ type: UPDATE_QUOTE, quote });
+                    dispatch({ type: UPDATE_COLLECTION, collection });
                 });
             }
         });
     }
 }
 
-export function deleteQuote(id) {
+export function deleteCollection(id) {
     return (dispatch) => {
         AsyncStorage.getItem('data', (err, data) => {
             if (data !== null) {
@@ -57,7 +57,7 @@ export function deleteQuote(id) {
                 const index = getIndex(data, id);
                 if (index !== -1) data.splice(index, 1);
                 AsyncStorage.setItem('data', JSON.stringify(data), () => {
-                    dispatch({ type: DELETE_QUOTE, id });
+                    dispatch({ type: DELETE_COLLECTION, id });
                 });
             }
         });
@@ -65,6 +65,5 @@ export function deleteQuote(id) {
 }
 
 const getIndex = (data, id) => {
-    let clone = {...data};
-    return clone.findIndex(obj => parseInt(obj.id) === parseInt(id));
+    return [...data].findIndex((obj) => parseInt(obj.id) === parseInt(id));
 };

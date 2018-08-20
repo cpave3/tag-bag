@@ -79,7 +79,11 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.props.getQuotes();
+        this.props.getCollections();
+    }
+
+    showOptions(collection) {
+        Actions.new_collection({collection, edit: true, title:"Edit Collection"});
     }
 
     render() {
@@ -99,7 +103,7 @@ class Home extends Component {
                         keyExtractor={(item, index) => {return `${index}`;}} 
                     />
                     <TouchableHighlight style={styles.addButton}
-                                        underlayColor='#ff7043' onPress={() => Actions.new_quote()}>
+                                        underlayColor='#ff7043' onPress={() => Actions.new_collection()}>
                         <Text style={{fontSize: 25, color: 'white'}}>+</Text>
                     </TouchableHighlight>
                 </View>
@@ -108,16 +112,20 @@ class Home extends Component {
     }
 
     renderItem = ({item, index}) => {
-        return (
-            <View style={styles.row}>
-                <Text style={styles.title}>
-                    { `${item.author}` }
-                </Text>
-                <Text style={styles.description}>
-                    { item.quote }
-                </Text>
-            </View>
-        );
+        if (item.name && item.tags) {
+            return (
+                <TouchableHighlight onPress={() => this.showOptions(item)} underlayColor='rgba(0,0,0,.2)'>
+                    <View style={styles.row}>
+                        <Text style={styles.title}>
+                            {item.name}
+                        </Text>
+                        <Text style={styles.description}>
+                            {item.tags.join(', ')}
+                        </Text>
+                    </View>
+                </TouchableHighlight>
+            );
+        }
     }
 }
 

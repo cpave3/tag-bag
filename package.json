@@ -19,11 +19,13 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/react-native-action-sheet": "^1.0.2",
     "expo": "^27.0.1",
     "react": "16.3.1",
     "react-native": "~0.55.2",
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-router-flux": "^4.0.1",
+    "react-native-tag-input": "^0.0.21",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
