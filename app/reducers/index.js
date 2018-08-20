@@ -11,8 +11,8 @@ const dataReducer = (state = initialState, action) => {
     switch (action.type) {
 
         case ADD_QUOTE:
-            data = {...state.data};
-            data.unshift(action.quote);
+            data = [...state.data];
+            data = [action.quote, ...data];
             return Object.assign({}, state, { data });
 
         case QUOTES_AVAILABLE:

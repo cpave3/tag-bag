@@ -25,8 +25,8 @@ class Main extends Component {
         return (
             <Router>
                 <Scene key='root'>
-                    <Scene key='home' component={Home} title='Home' initial />
-                    <Scene key='new_quote' component={NewQuote} title='New Quote' />
+                    <Scene key='home' component={Home} title='Collections' initial />
+                    <Scene key='new_quote' component={NewQuote} title='New Collection' />
                 </Scene>
             </Router>
         );

@@ -54,7 +54,7 @@ class NewQuote extends Component {
 
     render() {
         return (
-            <View style={{flex: 1, backgroundCOlor: '#fff'}}>
+            <View style={{flex: 1, backgroundColor: '#fff'}}>
                 <View style={{ flex: 1, paddingLeft: 10, paddingRight: 10 }}>
                     <TextInput 
                         onChangeText={(text) => {this.setState({ author: text })}}
