@@ -13,7 +13,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as ReduxActions from '../actions/';
+import * as ReduxActions from '../actions';
 
 import { Actions } from 'react-native-router-flux';
 
@@ -34,8 +34,9 @@ const styles = StyleSheet.create({
     },
 
     row: {
-        borderBottomWidth: 1,
-        backgroundColor: '#ccc',
+        borderBottomWidth: 2,
+        borderColor: '#ccc',
+        backgroundColor: '#fff',
         padding: 10,
     },
 
@@ -57,7 +58,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.props.getData();
+        this.props.getQuotes();
     }
 
     render() {
@@ -69,7 +70,7 @@ class Home extends Component {
             );
         } else {
             return (
-                <View style={{ flex: 1, backgroundColor: '#F5F5F5', paddingTop: 20 }}>
+                <View style={{ flex: 1, backgroundColor: '#F5F5F5', paddingTop: 0 }}>
                     <FlatList
                         ref='listRef'
                         data={this.props.data}
@@ -85,10 +86,10 @@ class Home extends Component {
         return (
             <View style={styles.row}>
                 <Text style={styles.title}>
-                    { `${parseInt(index) + 1}. ${item.title}` }
+                    { `${item.author}` }
                 </Text>
                 <Text style={styles.description}>
-                    { item.description }
+                    { item.quote }
                 </Text>
             </View>
         );
@@ -103,7 +104,7 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators(Actions, dispatch);
+    return bindActionCreators(ReduxActions, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -24,7 +24,7 @@ export function getQuotes() {
         AsyncStorage.getItem('data', (err, data) => {
             if (data !== null) {
                 data = JSON.parse(data);
-                dispatch({ type: QUOTES_AVAILABLE, quotes: data });
+                dispatch({ type: QUOTES_AVAILABLE, data });
             }
         });
     };

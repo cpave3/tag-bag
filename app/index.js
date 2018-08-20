@@ -4,7 +4,7 @@ import { View, AsyncStorage } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 
 import Home from './components/Home';
-import NewQuote from './components/NewQuote';
+import NewQuote from './components/AddQuote';
 
 import Data from './initial.json';
 

@@ -10,7 +10,7 @@ import {
 import uuid4 from 'uuid/v4';
 
 import { connect } from 'react-redux';
-import { addQuote, updateQuote } from '../actions/';
+import { addQuote, updateQuote } from '../actions';
 import { Actions } from 'react-native-router-flux';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
