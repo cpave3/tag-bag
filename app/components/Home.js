@@ -8,10 +8,11 @@ import {
     Text,
     ActivityIndicator,
     TouchableHighlight,
-    ActionSheetIOS
+    Clipboard
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet';
 
 import * as ReduxActions from '../actions';
 
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
     }
 });
 
+@connectActionSheet
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -83,7 +85,25 @@ class Home extends Component {
     }
 
     showOptions(collection) {
-        Actions.new_collection({collection, edit: true, title:"Edit Collection"});
+        let options = ['Copy', 'Edit', 'Delete', 'Cancel'];
+        let destructiveButtonIndex = 2;
+        let cancelButtonIndex = 3;
+        
+        this.props.showActionSheetWithOptions({
+            options,
+            cancelButtonIndex,
+            destructiveButtonIndex,
+        },
+        (buttonIndex) => {
+            if (buttonIndex === 0) {
+                Clipboard.setString(collection.tags.map(tag => {
+                    return `#${tag}`;
+                }).join(' '));
+            } else
+            if (buttonIndex === 1) {
+                Actions.new_collection({collection, edit: true, title:"Edit Collection"});
+            }
+        });
     }
 
     render() {

@@ -3,13 +3,17 @@ import { Provider } from 'react-redux';
 
 import store from './app/store';
 import Main from './app/index';
+import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet';
 
+@connectActionSheet
 export default class App extends React.Component {
   render() {
     return (
-      <Provider store={store}>
-        <Main />
-      </Provider>
+      <ActionSheetProvider>
+        <Provider store={store}>
+          <Main />
+        </Provider>
+      </ActionSheetProvider>
     );
   }
 }
