@@ -34,8 +34,23 @@ class Main extends Component {
         return (
             <Router>
                 <Scene key='root'>
-                    <Scene key='home' component={Home} title='Collections' tintColor='#fff' titleStyle={styles.navTitle} navigationBarStyle={styles.navBar} initial />
-                    <Scene key='new_collection' component={NewCollection} tintColor='#fff' titleStyle={styles.navTitle} navigationBarStyle={styles.navBar} title='New Collection' />
+                    <Scene 
+                        key='home' 
+                        component={Home} 
+                        title='Collections' 
+                        tintColor='#fff' 
+                        titleStyle={styles.navTitle} 
+                        navigationBarStyle={styles.navBar}
+                        initial 
+                    />
+                    <Scene 
+                        key='new_collection' 
+                        component={NewCollection} 
+                        tintColor='#fff' 
+                        titleStyle={styles.navTitle} 
+                        navigationBarStyle={styles.navBar} 
+                        title='New Collection' 
+                    />
                 </Scene>
             </Router>
         );

@@ -107,11 +107,41 @@ class Home extends Component {
         });
     }
 
+    extractTags = (collectionId) => {
+        const collection = this.props.data.find(col => { return (col.id && col.id === collectionId) })
+        return (collection && collection.tags) ? collection.tags : [];
+    }
+
+    extractIncludes = (collectionId) => {
+        const collection = this.props.data.find(col => { return (col.id && col.id === collectionId) })
+        return (collection && collection.includes) ? collection.includes : [];
+    }
+
+    getIndex = (data, id) => {
+        return [...data].findIndex((obj) => parseInt(obj.id) === parseInt(id));
+    };
+
     copyTags = (collection) => {
-        Clipboard.setString(collection.tags.map(tag => {
+        // Need to get the tags for the includes groups as well, flattened to avoid duplicates
+        // remove duplicate groups and duplicate tags
+        let tags = [...this.extractTags(collection.id)];
+        let included = [collection.id];
+        let includes = collection.includes;
+        if (includes) {
+            includes.forEach(id => {
+                if (this.getIndex(included, id) === -1) {
+                    tags = [...tags, ...this.extractTags(id)];
+                    // includes = [...includes, this.extractIncludes(id)];
+                    included.push(id);
+                }
+            });
+        }
+
+        Clipboard.setString(tags.map(tag => {
             return `#${tag}`;
         }).join(' '));
-        this.refs.toast.show('Tags copied to clipboard!');
+
+        this.refs.toast.show(`Copied ${tags.length} tags to clipboard!`);
     }
 
     render() {

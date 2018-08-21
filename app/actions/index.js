@@ -24,7 +24,6 @@ export function getCollections() {
         AsyncStorage.getItem('data', (err, data) => {
             if (data !== null) {
                 data = JSON.parse(data);
-                console.log(data);
                 dispatch({ type: COLLECTIONS_AVAILABLE, data });
             }
         });

@@ -95,7 +95,6 @@ class NewCollection extends Component {
     }
 
     handleIncludeChange = (includes) => {
-        console.log(includes);
         this.setState({ includes });
     }
 
@@ -118,7 +117,7 @@ class NewCollection extends Component {
                             labelExtractor={(tag) => tag}
                             text={this.state.text}
                             onChangeText={this.handleTextChange}
-                            maxHeight={75}
+                            // maxHeight={75}
                             inputProps={{
                                 style: {
                                     lineHeight: 16,
@@ -167,7 +166,7 @@ export default connect(mapStateToProps, { addCollection, updateCollection, getCo
 
 const styles = StyleSheet.create({
     saveBtn:{
-        width: windowWidth,
+        // width: windowWidth,
         height: 44,
         justifyContent: "center",
         alignItems: 'center',
