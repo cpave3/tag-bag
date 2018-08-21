@@ -13,6 +13,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet';
+import Toast, {DURATION} from 'react-native-easy-toast'
 
 import * as ReduxActions from '../actions';
 
@@ -52,8 +53,8 @@ const styles = StyleSheet.create({
     },
 
     addButton: {
-        backgroundColor: '#ff5722',
-        borderColor: '#ff5722',
+        backgroundColor: '#eb4d4b',
+        borderColor: '#eb4d4b',
         borderWidth: 1,
         height: 50,
         width: 50,
@@ -106,6 +107,13 @@ class Home extends Component {
         });
     }
 
+    copyTags = (collection) => {
+        Clipboard.setString(collection.tags.map(tag => {
+            return `#${tag}`;
+        }).join(' '));
+        this.refs.toast.show('Tags copied to clipboard!');
+    }
+
     render() {
         if (this.props.loading) {
             return (
@@ -122,10 +130,21 @@ class Home extends Component {
                         renderItem={this.renderItem}
                         keyExtractor={(item, index) => {return `${index}`;}} 
                     />
-                    <TouchableHighlight style={styles.addButton}
-                                        underlayColor='#ff7043' onPress={() => Actions.new_collection()}>
+                    <TouchableHighlight 
+                        style={styles.addButton}
+                        underlayColor='#6ab04c' 
+                        onPress={() => Actions.new_collection()}
+                    >
                         <Text style={{fontSize: 25, color: 'white'}}>+</Text>
                     </TouchableHighlight>
+                    <Toast 
+                        ref="toast"
+                        position='bottom'
+                        positionValue={200}
+                        fadeInDuration={750}
+                        fadeOutDuration={1000}
+                        opacity={0.8}
+                    />
                 </View>
             );
         }
@@ -134,7 +153,10 @@ class Home extends Component {
     renderItem = ({item, index}) => {
         if (item.name && item.tags) {
             return (
-                <TouchableHighlight onPress={() => this.showOptions(item)} underlayColor='rgba(0,0,0,.2)'>
+                <TouchableHighlight 
+                    onLongPress={() => this.showOptions(item)} underlayColor='rgba(0,0,0,.2)'
+                    onPress={() => this.copyTags(item)}
+                >
                     <View style={styles.row}>
                         <Text style={styles.title}>
                             {item.name}

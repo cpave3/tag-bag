@@ -24,6 +24,7 @@ export function getCollections() {
         AsyncStorage.getItem('data', (err, data) => {
             if (data !== null) {
                 data = JSON.parse(data);
+                console.log(data);
                 dispatch({ type: COLLECTIONS_AVAILABLE, data });
             }
         });
@@ -39,6 +40,7 @@ export function updateCollection(collection) {
                 if (index !== -1) {
                     data[index]['name'] = collection.name;
                     data[index]['tags'] = collection.tags;
+                    data[index]['includes'] = collection.includes;
                 }
                 AsyncStorage.setItem('data', JSON.stringify(data), () => {
                     dispatch({ type: UPDATE_COLLECTION, collection });

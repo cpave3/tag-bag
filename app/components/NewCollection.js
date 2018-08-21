@@ -10,10 +10,11 @@ import {
 import uuid4 from 'uuid/v4';
 
 import { connect } from 'react-redux';
-import { addCollection, updateCollection } from '../actions';
+import { addCollection, updateCollection, getCollections } from '../actions';
 import { Actions } from 'react-native-router-flux';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import TagInput from 'react-native-tag-input';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -21,7 +22,31 @@ class NewCollection extends Component {
     state = {
         tags: (this.props.edit) ? this.props.collection.tags : [],
         name: (this.props.edit) ? this.props.collection.name : '',
-        text: ''
+        text: '',
+        includes: (this.props.edit && this.props.collection.includes) ? this.props.collection.includes : [],
+        includeOptions: []
+    };
+
+    getCollectionsToInclude = async () => {
+        await this.props.getCollections();
+        const output = this.props.data.map(collection => {
+            const { id, name } = collection;
+            return { id, name };
+        });
+
+        this.setState({ includeOptions: [
+            {  
+              name: "Uncategorised",
+              id: 0,
+              children: output
+            }] });
+        // return ;
+
+        // return output;
+    }
+
+    componentDidMount = () => {
+        this.getCollectionsToInclude();
     };
 
     generateID = () => {
@@ -33,6 +58,7 @@ class NewCollection extends Component {
             let collection = this.props.collection;
             collection['name'] = this.state.name;
             collection['tags'] = this.state.tags;
+            collection['includes'] = this.state.includes;
             this.props.updateCollection(collection);
         } else {
             const id = this.generateID();
@@ -68,6 +94,11 @@ class NewCollection extends Component {
         this.setState({ tags });
     }
 
+    handleIncludeChange = (includes) => {
+        console.log(includes);
+        this.setState({ includes });
+    }
+
     render() {
         return (
             <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -97,6 +128,19 @@ class NewCollection extends Component {
                             }}
                         />
                     </View>
+                    <View style={{ flex: 1 }}>
+                    <SectionedMultiSelect
+                        items={this.state.includeOptions} 
+                        uniqueKey='id'
+                        subKey='children'
+                        selectText='Include collections...'
+                        showDropDowns={true}
+                        readOnlyHeadings={true}
+                        onSelectedItemsChange={this.handleIncludeChange}
+                        selectedItems={this.state.includes}
+                        selectChildren={true}
+                    />
+                    </View>
                     <TouchableOpacity 
                         style={[styles.saveBtn]}
                         disabled={this.hasData() ? false : true}
@@ -113,7 +157,13 @@ class NewCollection extends Component {
     }
 }
 
-export default connect(null, { addCollection, updateCollection })(NewCollection);
+const mapStateToProps = (state, props) => {
+    return {
+        data: state.dataReducer.data,
+    };
+};
+
+export default connect(mapStateToProps, { addCollection, updateCollection, getCollections })(NewCollection);
 
 const styles = StyleSheet.create({
     saveBtn:{

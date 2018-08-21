@@ -25,6 +25,7 @@ const dataReducer = (state = initialState, action) => {
             if (index !== -1) {
                 data[index]['name'] = collection.name;
                 data[index]['tags'] = collection.tags;
+                data[index]['includes'] = collection.includes;
             }
             return Object.assign({}, state, { data });
 
