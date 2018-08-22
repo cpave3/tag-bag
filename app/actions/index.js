@@ -41,6 +41,7 @@ export function updateCollection(collection) {
                     data[index]['tags'] = collection.tags;
                     data[index]['includes'] = collection.includes;
                 }
+
                 AsyncStorage.setItem('data', JSON.stringify(data), () => {
                     dispatch({ type: UPDATE_COLLECTION, collection });
                 });
@@ -66,8 +67,11 @@ export function deleteCollection(id) {
     };
 }
 
+/**
+ * This is just bad, redo
+ * @param {*} data 
+ * @param {*} id 
+ */
 const getIndex = (data, id) => {
-    return [...data].findIndex((obj) =>  {
-        obj.id === id
-    });
+    return [...data].findIndex((obj) => obj.id === id);
 };

@@ -13,7 +13,7 @@ import { getCollections } from './actions/';
 
 const styles = StyleSheet.create({
     navBar: {
-      backgroundColor: '#eb4d4b', // changing navbar color
+      backgroundColor: '#27ae60', // changing navbar color
     },
     navTitle: {
       color: 'white', // changing navbar title color

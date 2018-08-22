@@ -65,7 +65,8 @@ class NewCollection extends Component {
             const collection = {
                 id,
                 name: this.state.name,
-                tags: this.state.tags
+                tags: this.state.tags,
+                includes: this.state.includes
             };
             this.props.addCollection(collection);
         }
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
         height: 44,
         justifyContent: "center",
         alignItems: 'center',
-        backgroundColor:"#6B9EFA"
+        backgroundColor:"#27ae60"
     },
 
     buttonText:{

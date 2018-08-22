@@ -133,9 +133,7 @@ class Home extends Component {
     extractTags = (collectionIds) => {
         let tags = [];
         let collection;
-        console.log(collectionIds);
         collectionIds.forEach(id => {
-            console.log(collection);
             collection = this.props.data.find(col => { return (col.id && col.id === id) }) 
             if (collection) {
                 tags = tags.concat(collection.tags.filter(function (tag) {
@@ -208,7 +206,7 @@ class Home extends Component {
                         onRefresh={this._handleRefresh}
                     />
                     <SimpleFab 
-                        color='#eb4d4b'
+                        color='#27ae60'
                         text='+'
                         onPress={() => Actions.new_collection()}
                     />

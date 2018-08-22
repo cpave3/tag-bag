@@ -47,7 +47,7 @@ const rootReducer = combineReducers({
 });
 
 const getIndex = (data, id) => {
-    return [...data].findIndex((obj) => parseInt(obj.id) === parseInt(id));
+    return [...data].findIndex((obj) => obj.id === id);
 };
 
 export default rootReducer;
