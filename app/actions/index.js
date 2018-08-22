@@ -56,6 +56,7 @@ export function deleteCollection(id) {
                 data = JSON.parse(data);
 
                 const index = getIndex(data, id);
+                console.log('Delete index', index, data[index], id, data);
                 if (index !== -1) data.splice(index, 1);
                 AsyncStorage.setItem('data', JSON.stringify(data), () => {
                     dispatch({ type: DELETE_COLLECTION, id });
@@ -66,5 +67,7 @@ export function deleteCollection(id) {
 }
 
 const getIndex = (data, id) => {
-    return [...data].findIndex((obj) => parseInt(obj.id) === parseInt(id));
+    return [...data].findIndex((obj) =>  {
+        obj.id === id
+    });
 };

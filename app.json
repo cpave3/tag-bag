@@ -1,5 +1,15 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+   "name": "Tag Bag",
+   "icon": "./app/assets/app-icon.png",
+   "version": "1.0.0",
+   "slug": "tag-bag",
+   "sdkVersion": "27.0.0",
+   "ios": {
+     "bundleIdentifier": "com.bytedriven.tagbag"
+   },
+   "android": {
+     "package": "com.bytedriven.tagbag"
+   }
   }
 }

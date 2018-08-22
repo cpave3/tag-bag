@@ -31,7 +31,7 @@ const dataReducer = (state = initialState, action) => {
 
         case DELETE_COLLECTION:
             data = [...state.data];
-            index = getIndex(data, id);
+            index = getIndex(data, action.id);
             if (index !== -1) {
                 data.splice(index, 1);
                 return Object.assign({}, state, { data });

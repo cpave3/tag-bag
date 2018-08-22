@@ -8,12 +8,15 @@ import {
     Text,
     ActivityIndicator,
     TouchableHighlight,
-    Clipboard
+    Clipboard,
+    Alert
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet';
 import Toast, {DURATION} from 'react-native-easy-toast'
+
+import SimpleFab from './SimpleFab';
 
 import * as ReduxActions from '../actions';
 
@@ -78,7 +81,9 @@ const styles = StyleSheet.create({
 class Home extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            refreshing: false
+        };
     }
 
     componentDidMount() {
@@ -97,19 +102,48 @@ class Home extends Component {
         },
         (buttonIndex) => {
             if (buttonIndex === 0) {
-                Clipboard.setString(collection.tags.map(tag => {
-                    return `#${tag}`;
-                }).join(' '));
-            } else
-            if (buttonIndex === 1) {
+                this.copyTags(collection);
+            } 
+            
+            else if (buttonIndex === 1) {
                 Actions.new_collection({collection, edit: true, title:"Edit Collection"});
+            }
+
+            else if (buttonIndex == 2) {
+                // Delete
+                Alert.alert(
+                    'Delete Collection',
+                    'Are you sure? This cannot be undone.',
+                    [
+                    {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+                    {text: 'OK', onPress: () => { this.deleteCollection(collection.id) }},
+                    ],
+                    { cancelable: true }
+                )
             }
         });
     }
 
-    extractTags = (collectionId) => {
-        const collection = this.props.data.find(col => { return (col.id && col.id === collectionId) })
-        return (collection && collection.tags) ? collection.tags : [];
+    deleteCollection = (id) => {
+        console.log('Delete Triggered');
+        this.props.deleteCollection(id);
+        this.refs.toast.show(`Collection deleted`);
+    }
+
+    extractTags = (collectionIds) => {
+        let tags = [];
+        let collection;
+        console.log(collectionIds);
+        collectionIds.forEach(id => {
+            console.log(collection);
+            collection = this.props.data.find(col => { return (col.id && col.id === id) }) 
+            if (collection) {
+                tags = tags.concat(collection.tags.filter(function (tag) {
+                    return tags.indexOf(tag) < 0;
+                }));
+            }
+        });
+        return tags;
     }
 
     extractIncludes = (collectionId) => {
@@ -121,27 +155,38 @@ class Home extends Component {
         return [...data].findIndex((obj) => parseInt(obj.id) === parseInt(id));
     };
 
+    /**
+     * This method needs to be provided an id, and recursively get all required tags or includes
+     */
+    recursiveExtraction = (id) => {
+        let includeIds = [id, ...this.extractIncludes(id)];
+        for(let i = 0; i < includeIds.length; i++) {
+            const newIncludes = this.extractIncludes(includeIds[i]);
+            includeIds = includeIds.concat(newIncludes.filter(function (item) {
+                return includeIds.indexOf(item) < 0;
+            }));
+        }
+
+        // should have unique array of include ids now, log it
+        return this.extractTags(includeIds);
+    }
+
     copyTags = (collection) => {
         // Need to get the tags for the includes groups as well, flattened to avoid duplicates
         // remove duplicate groups and duplicate tags
-        let tags = [...this.extractTags(collection.id)];
-        let included = [collection.id];
-        let includes = collection.includes;
-        if (includes) {
-            includes.forEach(id => {
-                if (this.getIndex(included, id) === -1) {
-                    tags = [...tags, ...this.extractTags(id)];
-                    // includes = [...includes, this.extractIncludes(id)];
-                    included.push(id);
-                }
-            });
-        }
+        let tags = this.recursiveExtraction(collection.id);
 
         Clipboard.setString(tags.map(tag => {
             return `#${tag}`;
         }).join(' '));
 
         this.refs.toast.show(`Copied ${tags.length} tags to clipboard!`);
+    }
+
+    _handleRefresh = async () => {
+        this.setState({ refreshing: true });
+        await this.props.getCollections();
+        this.setState({ refreshing: false }); 
     }
 
     render() {
@@ -158,15 +203,15 @@ class Home extends Component {
                         ref='listRef'
                         data={this.props.data}
                         renderItem={this.renderItem}
-                        keyExtractor={(item, index) => {return `${index}`;}} 
+                        keyExtractor={(item, index) => {return `${index}`;}}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._handleRefresh}
                     />
-                    <TouchableHighlight 
-                        style={styles.addButton}
-                        underlayColor='#6ab04c' 
+                    <SimpleFab 
+                        color='#eb4d4b'
+                        text='+'
                         onPress={() => Actions.new_collection()}
-                    >
-                        <Text style={{fontSize: 25, color: 'white'}}>+</Text>
-                    </TouchableHighlight>
+                    />
                     <Toast 
                         ref="toast"
                         position='bottom'
@@ -181,23 +226,24 @@ class Home extends Component {
     }
 
     renderItem = ({item, index}) => {
-        if (item.name && item.tags) {
+        // if (item.name && item.tags) {
             return (
                 <TouchableHighlight 
                     onLongPress={() => this.showOptions(item)} underlayColor='rgba(0,0,0,.2)'
                     onPress={() => this.copyTags(item)}
                 >
-                    <View style={styles.row}>
+                   {(item.name && item.tags) ?
+                   <View style={styles.row}>
                         <Text style={styles.title}>
                             {item.name}
                         </Text>
                         <Text style={styles.description}>
                             {item.tags.join(', ')}
                         </Text>
-                    </View>
+                    </View> : <Text>INVALID DATA</Text>} 
                 </TouchableHighlight>
             );
-        }
+        // }
     }
 }
 

@@ -140,17 +140,17 @@ class NewCollection extends Component {
                         selectChildren={true}
                     />
                     </View>
-                    <TouchableOpacity 
-                        style={[styles.saveBtn]}
-                        disabled={this.hasData() ? false : true}
-                        onPress={this.addCollection}
-                    >
-                        <Text style={[styles.buttonText, { color: this.hasData() ? '#FFF' : 'rgba(255,255,255,.5)' }]}>
-                            Save
-                        </Text>
-                    </TouchableOpacity>
-                    <KeyboardSpacer />
                 </View>
+                <TouchableOpacity 
+                    style={[styles.saveBtn]}
+                    disabled={this.hasData() ? false : true}
+                    onPress={this.addCollection}
+                >
+                    <Text style={[styles.buttonText, { color: this.hasData() ? '#FFF' : 'rgba(255,255,255,.5)' }]}>
+                        Save
+                    </Text>
+                </TouchableOpacity>
+                <KeyboardSpacer />
             </View>
         );
     }
