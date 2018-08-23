@@ -9,7 +9,8 @@ import {
     ActivityIndicator,
     TouchableHighlight,
     Clipboard,
-    Alert
+    Alert,
+    CheckBox
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -197,14 +198,22 @@ class Home extends Component {
         } else {
             return (
                 <View style={{ flex: 1, backgroundColor: '#F5F5F5', paddingTop: 0 }}>
-                    <FlatList
-                        ref='listRef'
-                        data={this.props.data}
-                        renderItem={this.renderItem}
-                        keyExtractor={(item, index) => {return `${index}`;}}
-                        refreshing={this.state.refreshing}
-                        onRefresh={this._handleRefresh}
-                    />
+                    { 
+                        (this.props.data && this.props.data.length > 0) 
+                        ? <FlatList
+                            ref='listRef'
+                            data={this.props.data}
+                            renderItem={this.renderItem}
+                            keyExtractor={(item, index) => {return `${index}`;}}
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._handleRefresh}
+                        /> 
+                        : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ color: '#ccc', fontSize: 18 }}>
+                                To get started, tap the + button 
+                            </Text>
+                        </View>
+                    }
                     <SimpleFab 
                         color='#27ae60'
                         text='+'

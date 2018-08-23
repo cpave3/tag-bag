@@ -5,7 +5,8 @@ import {
     Dimensions,
     Text,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 import uuid4 from 'uuid/v4';
 
@@ -126,6 +127,17 @@ class NewCollection extends Component {
                                 },
                                 placeholder: 'Enter tags...'
                             }}
+                            tagContainerStyle={{
+                                borderColor: '#b2b2b2',
+                                backgroundColor: 'white',
+                                padding: 15,
+                                borderWidth: 1,
+                                borderRadius: 25
+                        
+                            }}
+                            tagTextStyle={{
+                                fontSize: 16
+                            }}
                         />
                     </View>
                     <View style={{ flex: 1 }}>
@@ -167,11 +179,14 @@ export default connect(mapStateToProps, { addCollection, updateCollection, getCo
 
 const styles = StyleSheet.create({
     saveBtn:{
-        // width: windowWidth,
-        height: 44,
+        // margin: 'auto',
+        // marginBottom: 15,
+        // width: windowWidth - 15,
+        height: Platform.OS === 'ios' ? 74 : 44,
         justifyContent: "center",
         alignItems: 'center',
-        backgroundColor:"#27ae60"
+        backgroundColor:"#27ae60",
+        // borderRadius: Platform.OS === 'ios' ? 10 : 0
     },
 
     buttonText:{
@@ -192,7 +207,7 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         lineHeight: 22,
         fontSize: 16,
-        fontFamily: 'sans-serif',
+        // fontFamily: 'sans-serif',
         height:25+32,
         padding: 16,
         paddingLeft:0
