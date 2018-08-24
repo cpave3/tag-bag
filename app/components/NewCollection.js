@@ -17,6 +17,8 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import TagInput from 'react-native-tag-input';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 
+import TagInput2 from './TagInput';
+
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 class NewCollection extends Component {
@@ -113,6 +115,7 @@ class NewCollection extends Component {
                     />
                 
                     <View style={[styles.tags]}>
+                        <TagInput2 />
                         <TagInput
                             value={this.state.tags}
                             onChange={this.handleTagChange}
