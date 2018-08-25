@@ -3,22 +3,30 @@ import {
     TextInput,
     Text,
     View,
-    StyleSheet
+    StyleSheet,
+    TouchableOpacity
 } from 'react-native';
 
 export default class TagInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: [
-                'words', 'get', 'tagged'
-            ],
+            items: this.props.items || [],
             text: ''
         };
     }
 
+    componentDidUpdate = (prevProps, prevState) => {
+        if (prevState.items != this.state.items && this.props.onChange) {
+            console.log('updating', this.state.items)
+            // Tags changed, fire update
+            this.props.onChange(this.state.items);
+        }
+    }
+
     _removeTag = (index) => {
         const items = [...this.state.items];
+        console.log(items, index);
         items.splice(index, 1);
         this.setState({
             items
@@ -27,23 +35,25 @@ export default class TagInput extends Component {
 
     _renderItem = (item, index) => {
         return (
-            <View style={this.styles.tagWrapper}>
-                <Text style={this.styles.tagText}>{item}</Text>
-                <Text 
-                    style={this.styles.tagCancelButton}
-                    onPress={index => this._removeTag(index)}
-                >x</Text>
-            </View>
+           <TouchableOpacity
+                onPress={() => { this._removeTag(index)} }
+                key={`${item}${index}`}
+           >
+                <View style={this.styles.tagWrapper}>
+                    <Text style={this.styles.tagText}>{item}</Text>
+                    <Text style={this.styles.tagCancelButton}>x</Text>
+                </View>
+           </TouchableOpacity>
         );
     }
 
     _parseTags = (text) => {
         console.log(text);
-        this.setState({ text });
+        // this.setState({ text });
 
         // Check all text for a delimiter
         const parseWhen = [',', ' ', ';', '\n'];
-        const ignoreWhen = [];
+        const ignoreWhen = ['#'];
 
         const lastTyped = text.charAt(text.length - 1);
 
@@ -51,25 +61,28 @@ export default class TagInput extends Component {
         let storedParts = [];
         let pendingTags = [];
 
+        console.log(textParts);
         textParts.forEach((char, index) => {
-            if (parseWhen.indexOf(char > -1)) {
+            if (parseWhen.indexOf(char) > -1) {
                 // This is a breaking character
                 pendingTags.push(storedParts.join(''));
+                console.log('pushed', pendingTags, storedParts);
                 storedParts = [];
-                console.log('pushed', char, index, textParts);
-
-            } else if (ignoreWhen.indexOf(char > -1)) {
+            } else if (ignoreWhen.indexOf(char) > -1) {
+                // Just ignore it
+                console.log('ignoed', char);
+            } else {
                 // Save this character
                 storedParts.push(char);
-            } else {
-                // Just ignore it
+                console.log('saved', char, storedParts);
             }
-            textParts.shift();
+            // textParts.shift();
         });
         this.setState({
             items: [...this.state.items, ...pendingTags],
             text: storedParts.join('')
         });
+        console.log(this.state);
     }
 
     render() {
@@ -79,9 +92,10 @@ export default class TagInput extends Component {
                     style={this.styles.textInput}
                     placeholder={this.props.placeholder || 'Enter tags'}
                     onChangeText={text => this._parseTags(text)}
+                    value={this.state.text}
                 />
                 <View style={this.styles.tagContainer}>
-                    { this.state.items.map((item, index) => this._renderItem(item)) }
+                    { this.state.items.map((item, index) => this._renderItem(item, index)) }
                 </View>
             </View>
         );
@@ -91,12 +105,14 @@ export default class TagInput extends Component {
 
         textInput: {
             marginBottom: 15,
-            fontSize: 16
+            fontSize: 16,
+            lineHeight: 16
         },
 
         tagContainer: {
             display: 'flex',
-            flexDirection: 'row'
+            flexDirection: 'row',
+            flexWrap: 'wrap',
         },
 
         tagWrapper: {

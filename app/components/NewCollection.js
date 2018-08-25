@@ -95,6 +95,7 @@ class NewCollection extends Component {
     }
 
     handleTagChange = (tags) => {
+        console.log('got tags', tags);
         this.setState({ tags });
     }
 
@@ -115,8 +116,11 @@ class NewCollection extends Component {
                     />
                 
                     <View style={[styles.tags]}>
-                        <TagInput2 />
-                        <TagInput
+                        <TagInput2 
+                            items={this.state.tags}
+                            onChange={this.handleTagChange}
+                        />
+                        {/* <TagInput
                             value={this.state.tags}
                             onChange={this.handleTagChange}
                             labelExtractor={(tag) => tag}
@@ -141,7 +145,7 @@ class NewCollection extends Component {
                             tagTextStyle={{
                                 fontSize: 16
                             }}
-                        />
+                        /> */}
                     </View>
                     <View style={{ flex: 1 }}>
                     <SectionedMultiSelect
