@@ -3,6 +3,7 @@ import {
     TextInput,
     Text,
     View,
+    ScrollView,
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
@@ -105,14 +106,17 @@ export default class TagInput extends Component {
 
         textInput: {
             marginBottom: 15,
+            padding: 16,
             fontSize: 16,
-            lineHeight: 16
+            lineHeight: 22,
         },
 
         tagContainer: {
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
+            // minHeight: 200,
+            // maxHeight: 400
         },
 
         tagWrapper: {

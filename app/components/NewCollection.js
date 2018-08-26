@@ -16,10 +16,18 @@ import { Actions } from 'react-native-router-flux';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import TagInput from 'react-native-tag-input';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
 import TagInput2 from './TagInput';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+
+const FirstRoute = () => (
+    <View style={[{ backgroundColor: '#ff4081' }]} />
+  );
+  const SecondRoute = () => (
+    <View style={[{ backgroundColor: '#673ab7' }]} />
+  );
 
 class NewCollection extends Component {
     state = {
@@ -27,7 +35,11 @@ class NewCollection extends Component {
         name: (this.props.edit) ? this.props.collection.name : '',
         text: '',
         includes: (this.props.edit && this.props.collection.includes) ? this.props.collection.includes : [],
-        includeOptions: []
+        includeOptions: [],
+        routes: [
+            { key: 'first', title: 'First' },
+            { key: 'second', title: 'Second' },
+        ],
     };
 
     getCollectionsToInclude = async () => {
@@ -114,7 +126,7 @@ class NewCollection extends Component {
                         style={[ styles.title ]}
                         value={this.state.name}
                     />
-                
+           
                     <View style={[styles.tags]}>
                         <TagInput2 
                             items={this.state.tags}
@@ -201,11 +213,11 @@ const styles = StyleSheet.create({
     },
 
     tags: {
-        padding: 16,
-        paddingLeft:0,
-        flex:1,
-        height: 200,
-        marginBottom:50,
+        // padding: 16,
+        // paddingLeft:0,
+        // flex:1,
+        height: 300,
+        // marginBottom:50,
         borderTopWidth: 1,
         borderColor: "rgba(212,211,211, 0.3)",
     },
