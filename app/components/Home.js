@@ -10,7 +10,7 @@ import {
     TouchableHighlight,
     Clipboard,
     Alert,
-    CheckBox
+    Switch
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -185,6 +185,7 @@ class Home extends Component {
 
     _renderItem = ({item, index}) => {
         // if (item.name && item.tags) {
+            // Turn this into a new extracted component
             return (
                 <TouchableHighlight 
                     onLongPress={() => this._showOptions(item)} underlayColor='rgba(0,0,0,.2)'
@@ -195,10 +196,13 @@ class Home extends Component {
                         <Text style={styles.title}>
                             {item.name}
                         </Text>
-                        <View>
+                        <View style={styles.content}>
                             <Text style={[styles.description, {flex:2}]}>
                                 {item.tags.join(', ')}
                             </Text>
+                            <Switch 
+
+                            />
                         </View>
                     </View> : <Text>INVALID DATA</Text>} 
                 </TouchableHighlight>
@@ -231,6 +235,13 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         backgroundColor: '#fff',
         padding: 10,
+        flex: 1,
+        flexDirection: 'column'
+    },
+
+    content: {
+        flex: 1,
+        flexDirection: 'row'
     },
 
     title: {
