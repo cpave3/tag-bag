@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage, StyleSheet } from 'react-native';
+import { View, AsyncStorage, StyleSheet, Platform } from 'react-native';
+
 
 import { Router, Scene } from 'react-native-router-flux';
 
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
     navTitle: {
       color: 'white', // changing navbar title color
     }
-  })
+  });
 
 class Main extends Component {
     componentDidMount() {

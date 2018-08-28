@@ -80,7 +80,9 @@ export default class TagInput extends Component {
             // textParts.shift();
         });
         this.setState({
-            items: [...this.state.items, ...pendingTags],
+            items: this.state.items.concat(pendingTags.filter(item => {
+                return this.state.items.indexOf(item) < 0;
+            })),
             text: storedParts.join('')
         });
         console.log(this.state);
@@ -94,6 +96,7 @@ export default class TagInput extends Component {
                     placeholder={this.props.placeholder || 'Enter tags'}
                     onChangeText={text => this._parseTags(text)}
                     value={this.state.text}
+                    autoCapitalize = 'none'
                 />
                 <View style={this.styles.tagContainer}>
                     { this.state.items.map((item, index) => this._renderItem(item, index)) }
