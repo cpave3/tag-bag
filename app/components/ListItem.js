@@ -15,7 +15,6 @@ export default class ListItem extends Component {
             id: this.props.id,
             name: this.props.name,
             tags: this.props.tags,
-            selected: false
         };
     }
 
@@ -46,11 +45,8 @@ export default class ListItem extends Component {
                         {this.props.tags.join(', ')}
                     </Text>
                     <Switch 
-                        value={this.state.selected}
+                        value={this.props.selected}
                         onValueChange={(status) => {
-                            this.setState({
-                                selected: !this.state.selected
-                            });
                             this.props.onSwitch(status);
                         }}
                     />

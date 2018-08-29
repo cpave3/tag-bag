@@ -26,6 +26,7 @@
     "react": "16.3.1",
     "react-native": "~0.55.2",
     "react-native-easy-toast": "^1.1.0",
+    "react-native-elements": "^0.19.1",
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-router-flux": "^4.0.1",
     "react-native-sectioned-multi-select": "^0.5.2",

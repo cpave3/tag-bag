@@ -138,6 +138,20 @@ class Home extends Component {
         this.refs.toast.show(`Copied ${tags.length} tags to clipboard!`);
     }
 
+    _bulkCopy = () => {
+        let tags = [];
+        this.state.selected.forEach(id => {
+            tags = tags.concat(this._recursiveExtraction(id).filter(item => {
+                return tags.indexOf(item) < 0;
+            }))
+        });
+        Clipboard.setString(tags.map(tag => {
+            return `#${tag}`;
+        }).join(' '));
+        this.setState({ selected: [] })
+        this.refs.toast.show(`Copied ${tags.length} tags to clipboard!`);
+    }
+
     _handleRefresh = async () => {
         this.setState({ refreshing: true });
         await this.props.getCollections();
@@ -163,6 +177,7 @@ class Home extends Component {
                             keyExtractor={(item, index) => {return `${index}`;}}
                             refreshing={this.state.refreshing}
                             onRefresh={this._handleRefresh}
+                            extraData={this.state.selected}
                         /> 
                         : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: '#ccc', fontSize: 18 }}>
@@ -173,7 +188,9 @@ class Home extends Component {
                     <SimpleFab 
                         color='#27ae60'
                         text={this.state.selected.length === 0 ? '+' : 'C'}
-                        onPress={() => Actions.new_collection()}
+                        onPress={this.state.selected.length > 0 ? () => this._bulkCopy() : () => Actions.new_collection()}
+                        icon={this.state.selected.length > 0 ? 'copy' : 'plus'}
+                        iconColor='white'
                     />
                     <Toast 
                         ref="toast"
@@ -207,35 +224,14 @@ class Home extends Component {
     _renderItem = ({item, index}) => {
         // Turn this into a new extracted componen
         return <ListItem 
-                    id={item.id}
-                    name={item.name}
-                    tags={item.tags}
-                    onLongPress={() => this._showOptions(item)}
-                    onPress={() => this._copyTags(item)}
-                    onSwitch={(status) => {this._handleSwitch(item, status)}}
-                    // onToggle={}
-                />
-        // return (
-        //     <TouchableHighlight 
-        //         onLongPress={() => this._showOptions(item)} underlayColor='rgba(0,0,0,.2)'
-        //         onPress={() => this._copyTags(item)}
-        //     >
-        //         {(item.name && item.tags) ?
-        //         <View style={styles.row}>
-        //             <Text style={styles.title}>
-        //                 {item.name}
-        //             </Text>
-        //             <View style={styles.content}>
-        //                 <Text style={[styles.description, {flex:2}]}>
-        //                     {item.tags.join(', ')}
-        //                 </Text>
-        //                 <Switch 
-
-        //                 />
-        //             </View>
-        //         </View> : <Text>INVALID DATA</Text>} 
-        //     </TouchableHighlight>
-        // );
+            id={item.id}
+            name={item.name}
+            tags={item.tags}
+            onLongPress={() => this._showOptions(item)}
+            onPress={() => this._copyTags(item)}
+            onSwitch={(status) => {this._handleSwitch(item, status)}}
+            selected={this.state.selected.indexOf(item.id) > -1}
+        />
     }
 }
 

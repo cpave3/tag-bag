@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, Text } from 'react-native';
+import { Icon } from 'react-native-elements'
 
 const styles = {
     fab: {
@@ -32,7 +33,9 @@ export default class SimpleFab extends Component {
             underlayColor={this.props.color} 
             onPress={this.props.onPress}
         >
-            <Text style={{fontSize: 25, color: 'white'}}>{this.props.text}</Text>
+            {this.props.icon ? 
+            <Icon name={this.props.icon} color={this.props.iconColor} type='entypo' /> :
+            <Text style={{fontSize: 25, color: 'white'}}>{this.props.text}</Text> }
         </TouchableHighlight>
         );
     }
