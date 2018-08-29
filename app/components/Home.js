@@ -17,6 +17,8 @@ import { connect } from 'react-redux';
 import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet';
 import Toast, {DURATION} from 'react-native-easy-toast'
 
+import helpers from '../helpers/';
+
 import SimpleFab from './SimpleFab';
 
 import * as ReduxActions from '../actions';
@@ -35,7 +37,8 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            refreshing: false
+            refreshing: false,
+            selected: []
         };
     }
 
@@ -169,7 +172,7 @@ class Home extends Component {
                     }
                     <SimpleFab 
                         color='#27ae60'
-                        text='+'
+                        text={this.state.selected.length === 0 ? '+' : 'C'}
                         onPress={() => Actions.new_collection()}
                     />
                     <Toast 
@@ -185,15 +188,31 @@ class Home extends Component {
         }
     }
 
+    _handleSwitch = (collection, status) => {
+        // This needs to toggle the collection id in the selected array
+        let { selected } = this.state;
+        const index = selected.findIndex(id => id === collection.id);
+        if (status) {
+            if (index < 0) {
+                selected = [...selected, collection.id];
+            }
+        } else {
+            if (index > -1) {
+                selected.splice(index, 1);
+            }
+        }
+        this.setState({ selected });
+    }
+
     _renderItem = ({item, index}) => {
-        // Turn this into a new extracted component
-        console.log(item, index);
+        // Turn this into a new extracted componen
         return <ListItem 
                     id={item.id}
                     name={item.name}
                     tags={item.tags}
                     onLongPress={() => this._showOptions(item)}
                     onPress={() => this._copyTags(item)}
+                    onSwitch={(status) => {this._handleSwitch(item, status)}}
                     // onToggle={}
                 />
         // return (

@@ -47,10 +47,11 @@ export default class ListItem extends Component {
                     </Text>
                     <Switch 
                         value={this.state.selected}
-                        onValueChange={() => {
+                        onValueChange={(status) => {
                             this.setState({
                                 selected: !this.state.selected
                             });
+                            this.props.onSwitch(status);
                         }}
                     />
                 </View>
