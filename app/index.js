@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     navTitle: {
       color: 'white', // changing navbar title color
     }
-  });
+  })
 
 class Main extends Component {
     componentDidMount() {

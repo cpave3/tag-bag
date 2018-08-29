@@ -22,6 +22,7 @@ import SimpleFab from './SimpleFab';
 import * as ReduxActions from '../actions';
 
 import { Actions } from 'react-native-router-flux';
+import ListItem from './ListItem';
 
 const BUTTONS = [
     'Edit',
@@ -52,6 +53,7 @@ class Home extends Component {
             cancelButtonIndex,
             destructiveButtonIndex,
         },
+
         (buttonIndex) => {
             if (buttonIndex === 0) {
                 this._copyTags(collection);
@@ -184,30 +186,37 @@ class Home extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        // if (item.name && item.tags) {
-            // Turn this into a new extracted component
-            return (
-                <TouchableHighlight 
-                    onLongPress={() => this._showOptions(item)} underlayColor='rgba(0,0,0,.2)'
+        // Turn this into a new extracted component
+        console.log(item, index);
+        return <ListItem 
+                    id={item.id}
+                    name={item.name}
+                    tags={item.tags}
+                    onLongPress={() => this._showOptions(item)}
                     onPress={() => this._copyTags(item)}
-                >
-                   {(item.name && item.tags) ?
-                   <View style={styles.row}>
-                        <Text style={styles.title}>
-                            {item.name}
-                        </Text>
-                        <View style={styles.content}>
-                            <Text style={[styles.description, {flex:2}]}>
-                                {item.tags.join(', ')}
-                            </Text>
-                            <Switch 
+                    // onToggle={}
+                />
+        // return (
+        //     <TouchableHighlight 
+        //         onLongPress={() => this._showOptions(item)} underlayColor='rgba(0,0,0,.2)'
+        //         onPress={() => this._copyTags(item)}
+        //     >
+        //         {(item.name && item.tags) ?
+        //         <View style={styles.row}>
+        //             <Text style={styles.title}>
+        //                 {item.name}
+        //             </Text>
+        //             <View style={styles.content}>
+        //                 <Text style={[styles.description, {flex:2}]}>
+        //                     {item.tags.join(', ')}
+        //                 </Text>
+        //                 <Switch 
 
-                            />
-                        </View>
-                    </View> : <Text>INVALID DATA</Text>} 
-                </TouchableHighlight>
-            );
-        // }
+        //                 />
+        //             </View>
+        //         </View> : <Text>INVALID DATA</Text>} 
+        //     </TouchableHighlight>
+        // );
     }
 }
 
@@ -230,50 +239,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
 
-    row: {
-        borderBottomWidth: 2,
-        borderColor: '#ccc',
-        backgroundColor: '#fff',
-        padding: 10,
-        flex: 1,
-        flexDirection: 'column'
-    },
-
-    content: {
-        flex: 1,
-        flexDirection: 'row'
-    },
-
-    title: {
-        fontSize: 15,
-        fontWeight: '600',
-    },
-
-    description: {
-        marginTop: 5,
-        fontSize: 14,
-    },
-
-    addButton: {
-        backgroundColor: '#eb4d4b',
-        borderColor: '#eb4d4b',
-        borderWidth: 1,
-        height: 50,
-        width: 50,
-        borderRadius: 50 / 2,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        bottom: 20,
-        right: 20,
-        shadowColor: "#000000",
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        shadowOffset: {
-            height: 1,
-            width: 0
-        }
-    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
