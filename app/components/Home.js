@@ -177,7 +177,7 @@ class Home extends Component {
                             keyExtractor={(item, index) => {return `${index}`;}}
                             refreshing={this.state.refreshing}
                             onRefresh={this._handleRefresh}
-                            extraData={this.state.selected}
+                            extraData={this.state}
                         /> 
                         : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: '#ccc', fontSize: 18 }}>
@@ -218,6 +218,7 @@ class Home extends Component {
                 selected.splice(index, 1);
             }
         }
+        console.log(collection, status, selected);
         this.setState({ selected });
     }
 

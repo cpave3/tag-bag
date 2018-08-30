@@ -29,6 +29,7 @@ export default class ListItem extends Component {
     }
 
     render() {
+        console.log('selected', this.props.selected);
         return (
             <TouchableHighlight 
                 key={this.props.id}
