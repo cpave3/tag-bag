@@ -7,17 +7,13 @@ import {
     View,
     Text,
     ActivityIndicator,
-    TouchableHighlight,
     Clipboard,
     Alert,
-    Switch
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionSheetProvider, connectActionSheet } from '@expo/react-native-action-sheet';
 import Toast, {DURATION} from 'react-native-easy-toast'
-
-import helpers from '../helpers/';
 
 import SimpleFab from './SimpleFab';
 
@@ -26,11 +22,6 @@ import * as ReduxActions from '../actions';
 import { Actions } from 'react-native-router-flux';
 import ListItem from './ListItem';
 
-const BUTTONS = [
-    'Edit',
-    'Delete',
-    'Cancel'
-];
 
 @connectActionSheet
 class Home extends Component {
