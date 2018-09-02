@@ -18,16 +18,6 @@ export default class ListItem extends Component {
         };
     }
 
-    _item = () => {
-        const { id, name, tags } = this.state;
-        console.log(id, name, tags);
-        return {
-            id,
-            name,
-            tags
-        };
-    }
-
     render() {
         console.log('selected', this.props.selected);
         return (
