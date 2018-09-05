@@ -178,7 +178,7 @@ class Home extends Component {
                     }
                     <SimpleFab 
                         color='#27ae60'
-                        text={this.state.selected.length === 0 ? '+' : 'C'}
+                        text={this.state.selected.length > 0 ? 'C' : '+'}
                         onPress={this.state.selected.length > 0 ? () => this._bulkCopy() : () => Actions.new_collection()}
                         icon={this.state.selected.length > 0 ? 'copy' : 'plus'}
                         iconColor='white'
